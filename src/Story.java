@@ -4,11 +4,9 @@ package src;
 public class Story {
     public static void printIntro() {
         GameLogic.clearConsole();
-        GameLogic.printSeperator(30);
-        System.out.println("Lore");
-        GameLogic.printSeperator(30);
-        System.out.println("A men longtime forgotten, was thinks that gods should saves them from damnation");
-        System.out.println("story 2");
+        GameLogic.printHeading("Histoire");
+        System.out.println("");
+
         GameLogic.anythingToContinue();
     }
 
