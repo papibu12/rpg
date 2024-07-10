@@ -336,6 +336,7 @@ public class GameLogic {
         battle(new Enemy(name, player.xp, player.Numlevel));
     }
 
+    //NPC
     public static void recluse() {
         if(player.Offéria == false){
             Offeria.firstEncounter(player);
