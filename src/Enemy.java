@@ -2,25 +2,24 @@ package src;
 
 public class Enemy extends Entity {
 
-    int playerXp;
-    int Numlevel;
+    private int playerXp;
 
-    public Enemy(String name, int playerXp, int Numlevel) {
-
-        super(name,(int)(Math.random() * (10 * Numlevel) + (playerXp / 4)) + (5 * Numlevel) + (playerXp / 4) , (int)(Math.random() * (2 + Numlevel)) + 1, 0,0,5 );
+    public Enemy(String name, int playerXp, int level) {
+        super(name, calculateMaxHp(playerXp, level), generateRandomXp(level), 0, level, level);
         this.playerXp = playerXp;
-        //(int)(Math.random() * (2 + playerXp + Numlevel)) + 1
-        //(int) (Math.random() * ((Numlevel * playerXp) / 2) + 1)
-        //(int) (Math.random() * ((playerXp * Math.pow(Numlevel, 2)) / 3) + 5)
-        // ((Math.pow(playerXp, 2)* Math.pow(NumLevel, 2))/2) + 5
-        // outdated formula maxhp : (int) (Math.random() * playerXp + playerXp / 3 + 5)
-        // (Math.pow(Numlevel,2)/(playerXp+1))
-        // outdated formula xpgiven on death : (int) (Math.random() * playerXp / 4 + 2)
+    }
+
+    private static int calculateMaxHp(int playerXp, int level){
+        return (int) (Math.random() * (10 * level) + (playerXp / 4)) + (5 * level) + (playerXp / 4);
+    }
+
+    private static int generateRandomXp(int level){
+        return (int) (Math.random() * (2 + level)) + 1;
     }
 
     @Override
     public int attack(Weapon w) {
-        int maximum = (xp * 2) + playerXp + 1;
+        int maximum = (xp * 2) + (playerXp / 2) + 1;
         int minimum = playerXp + 1;
        
         return (int) (Math.random() * (maximum - minimum)) + minimum;

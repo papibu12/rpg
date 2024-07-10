@@ -14,7 +14,7 @@ public class Weapons {
 
     public int damage(Player p){
         minimum = 5;
-        maximum = p.strenght + p.dexterity + p.intelligence + p.faith + 10;
+        maximum = p.strength + p.dexterity + p.intelligence + p.faith + 10;
         return (int)(Math.random()*maximum) + minimum;
     }
 }

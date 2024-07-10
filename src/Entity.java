@@ -4,17 +4,16 @@ public abstract class Entity {
 
     // variables / attribut que tous les personnages ont
     public String name;
-    // public String classR;
-    public int maxHp, hp, xp, xpRequire, Numlevel;
+    public int maxHp, hp, xp, xpRequire, level;
 
     // Constructeur pour les personnages
-    public Entity(String name, int maxHp, int xp, int xpRequire, int vitality, int Numlevel) {
+    public Entity(String name, int maxHp, int xp, int xpRequire, int vitality, int level) {
         this.name = name;
         this.maxHp = maxHp;
-        this.xp = xp;
-        // this.xpTrack = xpTrack;
-        this.xpRequire = xpRequire;
         this.hp = maxHp;
+        this.xp = xp;
+        this.xpRequire = xpRequire;
+        this.level = level;
     }
 
     public String getName() {

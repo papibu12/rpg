@@ -42,7 +42,7 @@ public class Weapon {
     }
 
     public int maxdmg(Weapon w, Player p){
-        int maxdmg = w.baseDmg + p.dexterity + p.strenght;
+        int maxdmg = w.baseDmg + p.dexterity + p.strength;
         return maxdmg;
     }
 

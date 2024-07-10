@@ -5,7 +5,7 @@ public class Offeria {
     public static void firstEncounter(Player p){
         GameLogic.clearConsole();
         GameLogic.printHeading("??? | Vous rencontrez une recluse");
-        System.out.println("Oh !! vous m'avez surpris, qui êtes-vous ?\nsi vous me cherchiez je ne rempondrez à aucune\ninterrogation");
+        System.out.println("Oh !! vous m'avez surpris, qui êtes-vous ?");
         GameLogic.printSeperator(50);
         System.out.println("(1) lui dire votre nom\n(2) non");
         int input = GameLogic.readInt("-> ", 2);
@@ -27,7 +27,7 @@ public class Offeria {
                 if(input == 1 && p.faith >= 10){
                     GameLogic.printHeading(Color.CYAN +"Offéria" + Color.RESET +" | Recluse de Aona");
                     System.out.println("Benedicat tibi.");
-                    int benediction = (p.faith / 8) + p.Numlevel;
+                    int benediction = (p.faith / 8) + p.level;
                     if(benediction <= 1){
                         p.xpRequire = p.xpRequire -2;
                     } else {
@@ -71,7 +71,7 @@ public class Offeria {
                 if(input == 1 && p.faith >= 10){
                     GameLogic.printHeading(Color.CYAN +"Offéria" + Color.RESET +" | Recluse de Aona");
                     System.out.println("Benedicat tibi.");
-                    int benediction = (p.faith / 8) + p.Numlevel;
+                    int benediction = (p.faith / 8) + p.level;
                     if(benediction <= 1){
                         p.xpRequire = p.xpRequire -2;
                     } else {

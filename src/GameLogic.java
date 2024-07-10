@@ -1,4 +1,5 @@
 package src;
+import java.util.List;
 import java.util.Scanner;
 
 public class GameLogic {
@@ -98,7 +99,7 @@ public class GameLogic {
         Story.printIntro();
 
         // create a new object with the name
-        player = new Player(name, 0, 0, 0, 0, 1);
+        player = new Player(name, 0);
         if(player.faith >= 10){
             w = new Talisman(name, 5, 1);
         }
@@ -120,7 +121,7 @@ public class GameLogic {
     // method that changes the game's value based on player xp
     public static void checkAct() {
         // change acts based on lvl
-        if (player.Numlevel >= 5 && act == 1) {
+        if (player.level >= 5 && act == 1) {
             // increment act and place
             act = 2;
             place = 1;
@@ -131,7 +132,7 @@ public class GameLogic {
             enemies[0] = "Evil Mage";
             enemies[1] = "Dark Knigh";
             // etc...
-        } else if (player.Numlevel >= 10 && act == 2) {
+        } else if (player.level >= 10 && act == 2) {
             // increment act and place
             act = 3;
             place = 2;
@@ -141,10 +142,19 @@ public class GameLogic {
             Story.printThridActIntro();
             enemies[0] = "Swamp Witch";
             enemies[1] = "Stone Golem";
-        } else if (player.Numlevel >= 15 && act == 3) {
+        } else if (player.level >= 15 && act == 3) {
             // increment act and place
             act = 4;
             place = 3;
+            // story
+            Story.printThridActOutro();
+            // story
+            Story.printFourthActIntro();
+
+        } else if (player.level >= 20 && act == 4) {
+            // increment act and place
+            act = 5;
+            place = 4;
             // story
             Story.printThridActOutro();
             // story
@@ -183,23 +193,23 @@ public class GameLogic {
     // printing out the most important information about player character
     public static void characterInfo() {
         clearConsole();
-        int maximum = (player.endurance / 2) + player.resistance + player.Numlevel;
-        int minimum = (player.endurance / 4) + (player.resistance / 2)+ player.Numlevel;
-        printHeading(Color.BLUE_BOLD_BRIGHT + "Personnage : " + Color.RESET + player.name + "\t\t\tLevel : " + player.Numlevel);
+        int maximum = (player.endurance / 2) + player.resistance + player.level;
+        int minimum = (player.endurance / 4) + (player.resistance / 2)+ player.level;
+        printHeading(Color.BLUE_BOLD_BRIGHT + "Personnage : " + Color.RESET + player.name + "\t\t\tLevel : " + player.level);
         System.out.println("Expérience     : " + player.xp + "\t\t\tHp : " + Color.RED_BRIGHT + player.hp + Color.RESET + "/" + Color.RED_BRIGHT + player.maxHp + Color.RESET);
         System.out.println("Expérience Req : " + player.xpRequire);
         printSeperator(50);
         System.out.println("Vitalité    : " + player.vitality);
         System.out.println("Volonté     : " + player.attunement);
         System.out.println("Endurance   : " + player.endurance);
-        System.out.println("Force       : " + player.strenght);
+        System.out.println("Force       : " + player.strength);
         System.out.println("Dextérité   : " + player.dexterity);
         System.out.println("Résistance  : " + player.resistance);
         System.out.println("Intéligence : " + player.intelligence);
         System.out.println("Foi         : " + player.faith);
         printSeperator(50);
         System.out.println("Potion de Soin : " + player.pots + "\t\tGold : " + Color.YELLOW_BRIGHT + player.gold + Color.RESET);
-        System.out.println("Feu de Camps : " + player.restleft + "\t\tArmure : " + maximum + "-" + minimum);
+        System.out.println("Feu de Camps : " + player.restLeft + "\t\tArmure : " + maximum + "-" + minimum);
         System.out.println("Arme : " + (player.maxDMG(w)) + " - "+ w.getBaseWeapon());
         printSeperator(50);
         anythingToContinue();
@@ -213,7 +223,7 @@ public class GameLogic {
             System.out.println("(1) Vitalité    : " + player.vitality);
             System.out.println("(2) Volonté     : " + player.attunement);
             System.out.println("(3) Endurance   : " + player.endurance);
-            System.out.println("(4) Force       : " + player.strenght);
+            System.out.println("(4) Force       : " + player.strength);
             System.out.println("(5) Dextérité   : " + player.dexterity);
             System.out.println("(6) Résistance  : " + player.resistance);
             System.out.println("(7) Intéligence : " + player.intelligence);
@@ -230,7 +240,7 @@ public class GameLogic {
                     player.endurance += 1;
                     break;
                 case 4:
-                    player.strenght += 1;
+                    player.strength += 1;
                     break;
                 case 5:
                     player.dexterity += 1;
@@ -249,8 +259,8 @@ public class GameLogic {
             }
             player.xp = player.xp - player.xpRequire;
             player.xpRequire = (player.xpRequire + (int) (Math.random() * 3 - 1) + 1);
-            player.Numlevel += 1;
-            player.maxHp = (4 * player.vitality) + (player.Numlevel * 2);
+            player.level += 1;
+            player.maxHp = (4 * player.vitality) + (player.level * 2);
             player.hp += 4;
             if (player.hp >= player.maxHp){
                 player.hp = player.maxHp;
@@ -269,7 +279,7 @@ public class GameLogic {
         
         //initialisation des différents prix
         int pricePotion = (int) (Math.random() * (10 + (player.pots * 2))) + 5 + player.pots;
-        int priceRepos = (int) (Math.random() * (10 + (player.restleft * 3))) + 10 + player.restleft;
+        int priceRepos = (int) (Math.random() * (10 + (player.restLeft * 3))) + 10 + player.restLeft;
 
         System.out.println("Venez me voir pour les meilleurs affaires");
         System.out.println("- bénédiction divine : " + Color.YELLOW + pricePotion + Color.RESET +" gold.");
@@ -293,7 +303,7 @@ public class GameLogic {
             clearConsole();
             if (player.gold >= priceRepos) {
                 printHeading("Vous avez acheter un Feu de Camps \n-" + priceRepos + " gold");
-                player.restleft++;
+                player.restLeft++;
                 player.gold -= priceRepos;
             } else  {
                 printHeading(Color.GREEN + "Marchand itinérant : " + Color.RESET + nameShop);
@@ -333,7 +343,7 @@ public class GameLogic {
 
     public static void specialBattle(String name) {
         clearConsole();
-        battle(new Enemy(name, player.xp, player.Numlevel));
+        battle(new Enemy(name, player.xp, player.level));
     }
 
     //NPC
@@ -357,23 +367,23 @@ public class GameLogic {
     // takin a rest
     public static void takeRest() {
         clearConsole();
-        if (player.restleft >= 1) {
-            printHeading("Voulez-vous vous reposer auprès d'un de feu ?\n(" + player.restleft + " repot(s) restant(s)).\t\tPv : " + player.hp +"/"+ player.maxHp);
+        if (player.restLeft >= 1) {
+            printHeading("Voulez-vous vous reposer auprès d'un de feu ?\n(" + player.restLeft + " repot(s) restant(s)).\t\tPv : " + player.hp +"/"+ player.maxHp);
             System.out.println("(1) oui\n(2) non");
             int input = readInt("-> ", 2);
             clearConsole();
             if (input == 1) {
                 printHeading(Color.RED + "Feu" + Color.RESET +" | Vous vous êtes reposé(e).");
                 if (player.hp < player.maxHp) {
-                    int maximum = player.vitality + player.Numlevel + player.endurance;
-                    int minimum = player.Numlevel + player.endurance + 5; 
+                    int maximum = player.vitality + player.level + player.endurance;
+                    int minimum = player.level + player.endurance + 5; 
                     int hpRestored = (int) (Math.random() * (maximum - minimum)) + minimum;
                     player.hp += hpRestored;
                     if (player.hp >= player.maxHp)
                         player.hp = player.maxHp;
                     System.out.println("Et vous vous êtes restauré(e) " + Color.RED + hpRestored + Color.RESET +" Hp.");
                     System.out.println("Hp : " +player.hp + "/" + player.maxHp + " Hp.");
-                    player.restleft--;
+                    player.restLeft--;
                 }
                 anythingToContinue();
             } else {
@@ -389,109 +399,90 @@ public class GameLogic {
         printHeading("Le Mal vous a Trouvé, Vous allez vous Battre !");
         anythingToContinue();
         // creatting a new enemy with random name
-        battle(new Enemy(enemies[(int) (Math.random() * enemies.length)], player.xp, player.Numlevel));
+        battle(new Enemy(enemies[(int) (Math.random() * enemies.length)], player.xp, player.level));
     }
 
-    // the main Battle method
     public static void battle(Enemy enemy) {
-        // main loop
-        while (true) {
+    while (true) {
+        clearConsole();
+        printHeading(Color.MAGENTA + enemy.name + Color.RESET + "\nHp : " + Color.RED + enemy.hp + Color.RESET + "/" + Color.RED + enemy.maxHp + Color.RESET);
+        System.out.println(Color.GREEN_BRIGHT + player.name + Color.RESET + "\nHp : " + Color.RED + player.hp + Color.RESET + "/" + Color.RED + player.maxHp + Color.RESET);
+        printSeperator(50);
+        System.out.println("Choisisez une action");
+        printSeperator(50);
+        System.out.println("(1) Combattre\n(2) Utiliser un objet\n(3) Fuir");
+        int input = readInt("-> ", 3);
+
+        if (input == 1) {
+            int dmg = player.attack(w) - enemy.defend();
+            int dmgTook = enemy.attack(w) - player.defend();
+            if (dmgTook < 0) {
+                dmg -= dmgTook / 2;
+                dmgTook = 0;
+            }
+            if (dmg < 0) dmg = 0;
+            player.hp -= dmgTook;
+            enemy.hp -= dmg;
             clearConsole();
-            printHeading(Color.MAGENTA + enemy.name + Color.RESET + "\nHp : " + Color.RED + enemy.hp + Color.RESET + "/" + Color.RED + enemy.maxHp + Color.RESET);
-            System.out.println(Color.GREEN_BRIGHT + player.name + Color.RESET + "\nHp : " + Color.RED + player.hp + Color.RESET + "/" + Color.RED + player.maxHp + Color.RESET);
+            printHeading("Combat |");
+            System.out.println("Vous avez infligé " + dmg + " dmg à " + Color.MAGENTA + enemy.name + Color.RESET + ".");
             printSeperator(50);
-            System.out.println("Choisisez une action");
-            printSeperator(50); //20
-            System.out.println("(1) Combattre\n(2) Utiliser un objet\n(3) Fuir");
-            int input = readInt("-> ", 3);
-            // react accordingly to player input
-            if (input == 1) {
-                // fight
-                // calculate dmg and dmg took
-                int dmg = player.attack(w) - enemy.defend();
-                int dmgTook = enemy.attack(w) - player.defend();
-                // check that dmg and dmgtook isn't negatif
-                if (dmgTook < 0) {
-                    // add some dmg if player defend very well
-                    dmg -= dmgTook / 2;
-                    dmgTook = 0;
-                }
-                if (dmg < 0)
-                    dmg = 0;
-                player.hp -= dmgTook;
-                enemy.hp -= dmg;
-                // print new info battle
+            System.out.println((Color.MAGENTA + enemy.name + Color.RESET + " vous à infligé " + dmgTook + " dmg."));
+            printSeperator(50);
+            anythingToContinue();
+
+            if (player.hp <= 0) {
+                playerDied();
+                break;
+            } else if (enemy.hp <= 0) {
                 clearConsole();
-                printHeading("Combat |");
-                System.out.println("Vous avez infligé " + dmg + " dmg à " + Color.MAGENTA + enemy.name + Color.RESET + ".");
-                printSeperator(50);
-                System.out.println((Color.MAGENTA + enemy.name + Color.RESET+ " vous à infligé " + dmgTook + " dmg."));
-                printSeperator(50);
+                printHeading("Combat | " + Color.YELLOW_BOLD_BRIGHT + "Vous avez Triomphé" + Color.RESET);
+                player.xp += enemy.xp;
+                System.out.println("+ " + enemy.xp + "xp !");
+                boolean addRest = (Math.random() * 5 + 1 <= 2.25);
+                int goldEarned = (int) (Math.random() * enemy.xp);
+                if (addRest) {
+                    player.restLeft++;
+                    System.out.println("Vous avez obtenu un feu de camp supplémentaire !");
+                }
+                if (goldEarned > 0) {
+                    player.gold += goldEarned;
+                    System.out.println("Vous avez obtenu " + Color.YELLOW_BOLD_BRIGHT + goldEarned + Color.RESET + " Gold");
+                }
                 anythingToContinue();
-                // check if player is alive
-                if (player.hp <= 0) {
-                    playerDied(); // methode at this end of the game
-                    break;
-                } else if (enemy.hp <= 0) {
-                    clearConsole();
-                    printHeading("Combat | " + Color.YELLOW_BOLD_BRIGHT + "Vous avez Triomphé" + Color.RESET);
-                    player.xp += enemy.xp;
-                    System.out.println("+ " + enemy.xp + "xp !");
-                    // random
-                    boolean addRest = (Math.random() * 5 + 1 <= 2.25);
-                    int goldEarned = (int) (Math.random() * enemy.xp);
-                    if (addRest) {
-                        player.restleft++;
-                        System.out.println("Vous avez obtenu un feu de camp supplémentaire !");
-                    }
-                    if (goldEarned > 0) {
-                        player.gold += goldEarned;
-                        System.out.println("Vous avez obtenu "+ Color.YELLOW_BOLD_BRIGHT + goldEarned + Color.RESET + " Gold");
-                    }
-                    anythingToContinue();
-                    break;
-                }
-            } else if (input == 2) {
-                // inventory
-                clearConsole();
-                if (player.pots > 0 && player.hp < player.maxHp) {
-                    int maximum = player.vitality + (player.endurance * 2);
-                    int minimum = player.vitality + player.endurance;
-                    int soin = (int) (Math.random() * (maximum - minimum)) + minimum;
-                    player.hp += soin;
-                    if (player.hp > player.maxHp) {
-                        player.hp = player.maxHp;
-                    }
-                    clearConsole();
-                    player.pots--;
-                    printHeading("Inventaire | Vous buvez une potion : + " + Color.RED + soin + Color.RESET);
-                    System.out.println(" Il vous reste " + player.pots + " potions");
-                    anythingToContinue();
-                } else {
-                    printHeading("Vous n'avez plus ou pas besoin de prendre une potion");
-                    anythingToContinue();
-                }
+                break;
+            }
+        } else if (input == 2) {
+            clearConsole();
+            player.showInventory();
+            System.out.println("Quel objet souhaitez-vous utiliser?");
+            List<Item> items = player.getInventory().getItems();
+            for (int i = 0; i < items.size(); i++) {
+                System.out.println("(" + (i + 1) + ") " + items.get(i).getName());
+            }
+            int itemChoice = readInt("-> ", items.size() + 1);
+            Item chosenItem = items.get(itemChoice - 1);
+            player.useItem(chosenItem);
+            anythingToContinue();
+        } else {
+            clearConsole();
+            if (Math.random() * 10 + 1 <= (player.dexterity / 2)) {
+                printHeading("Vous avez réussi à fuir de " + Color.MAGENTA + enemy.name + Color.RESET + " !");
+                anythingToContinue();
+                break;
             } else {
-                // run away
-                clearConsole();
-                if (Math.random() * 10 + 1 <= (player.dexterity / 2)) {
-                    printHeading("Vous avez réussi à fuir de "+ Color.MAGENTA + enemy.name + Color.RESET + " !");
-                    anythingToContinue();
+                int dmgTook = (int) (Math.random() * 5 - 1) + 1;
+                printHeading("Vous n'avez pas réussi à fuir de " + Color.MAGENTA + enemy.name + Color.RESET + "\net vous a infligez " + dmgTook + " dmg.");
+                player.hp -= dmgTook;
+                if (player.hp <= 0) {
+                    playerDied();
                     break;
-                } else {
-                    int dmgTook = (int) (Math.random() * 5 - 1) + 1;
-                    printHeading("Vous n'avez pas réussi à fuir de " + Color.MAGENTA + enemy.name + Color.RESET + "\net vous a infligez " + dmgTook + " dmg.");
-                    player.hp = player.hp - dmgTook;
-                    if (player.hp <= 0) {
-                        playerDied(); // methode at this end of the game
-                        break;
-                    }
-                } 
+                }
                 anythingToContinue();
             }
         }
     }
-
+}
     // printing the main menu
     public static void printMenu() {
         clearConsole();
@@ -506,7 +497,7 @@ public class GameLogic {
 
     // final battle
     public static void finalBattle() {
-        battle(new Enemy("Le Roi des Démon", 300, player.Numlevel));
+        battle(new Enemy("Le Roi des Démon", 300, player.level));
         Story.printEnd(player);
         isRunning = false;
     }
